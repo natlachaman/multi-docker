@@ -13,15 +13,23 @@ jobs:
         include:
          - context: ./client
            tags: natlachaman/multi-client
+           cache-to: type=local,src=/tmp/.buildx-cache/client
+           cache-from: type=local,dest=/tmp/.buildx-cache-new/client
 
          - context: ./server
            image: natlachaman/multi-server
+           cache-to: type=local,src=/tmp/.buildx-cache/server
+           cache-from: type=local,dest=/tmp/.buildx-cache-new/server
 
          - context: ./nginx
            image: natlachaman/multi-nginx
+           cache-to: type=local,src=/tmp/.buildx-cache/nginx
+           cache-from: type=local,dest=/tmp/.buildx-cache-new/nginx
 
          - context: ./worker
            image: natlachaman/multi-worker
+           cache-to: type=local,src=/tmp/.buildx-cache/worker
+           cache-from: type=local,dest=/tmp/.buildx-cache-new/worker
 
     steps:
       - uses: actions/checkout@v3
@@ -67,8 +75,8 @@ jobs:
           push: true
           context: ${{ matrix.context }}
           tags: ${{ matrix.tags }}:latest
-          cache-to: type=local,src=/tmp/.buildx-cache
-          cache-from: type=local,dest=/tmp/.buildx-cache-new
+          cache-to: ${{ matrix.cache-to }}
+          cache-from: ${{ matrix.cache-from }}
 
       - name: Move cache
         run: |
