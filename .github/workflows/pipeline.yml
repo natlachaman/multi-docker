@@ -56,19 +56,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      # name: Build multiple docker prod images
-      # - run: docker build -t natwimt/multi-client ./client
-      # - run: docker build -t natwimt/multi-nginx ./nginx
-      # - run: docker build -t natwimt/multi-server ./server
-      # - run: docker build -t natwimt/multi-worker ./worker
-
-      # name: Push to DockerHub
-      # - run: docker push natwimt/multi-client
-      # - run: docker push natwimt/multi-client
-      # - run: docker push natwimt/multi-client
-      # - run: docker push natwimt/multi-client
-
-
       - name: Build & Push images
         uses: docker/build-push-action@v2
         with:
@@ -83,18 +70,17 @@ jobs:
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
-
-      # - name: Generate deployment package
-      #   run: zip -r deploy.zip . -x '*.git*'
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
  
-      # - name: Deploy to EB
-      #   uses: einaregilsson/beanstalk-deploy@v18
-      #   with:
-      #     aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-      #     aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
-      #     application_name: docker-react
-      #     environment_name: Dockerreact-env
-      #     existing_bucket_name: elasticbeanstalk-eu-central-1-642447626057
-      #     region: eu-central-1
-      #     version_label: ${{ github.sha }}
-      #     deployment_package: deploy.zip
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v18
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: multi-docker
+          environment_name: MultiDocker-env
+          existing_bucket_name: elasticbeanstalk-us-east-1-642447626057
+          region: us-east-1
+          version_label: ${{ github.sha }}
+          deployment_package: deploy.zip
