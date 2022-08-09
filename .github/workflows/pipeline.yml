@@ -12,22 +12,22 @@ jobs:
       matrix:
         include:
          - context: ./client
-           tags: natlachaman/multi-client
+           tag: natlachaman/multi-client
            cache-from: type=local,src=/tmp/.buildx-cache/client
            cache-to: type=local,dest=/tmp/.buildx-cache-new/client
 
          - context: ./server
-           image: natlachaman/multi-server
+           tag: natlachaman/multi-server
            cache-from: type=local,src=/tmp/.buildx-cache/server
            cache-to: type=local,dest=/tmp/.buildx-cache-new/server
 
          - context: ./nginx
-           image: natlachaman/multi-nginx
+           tag: natlachaman/multi-nginx
            cache-from: type=local,src=/tmp/.buildx-cache/nginx
            cache-to: type=local,dest=/tmp/.buildx-cache-new/nginx
 
          - context: ./worker
-           image: natlachaman/multi-worker
+           tag: natlachaman/multi-worker
            cache-from: type=local,src=/tmp/.buildx-cache/worker
            cache-to: type=local,dest=/tmp/.buildx-cache-new/worker
 
@@ -74,7 +74,7 @@ jobs:
         with:
           push: true
           context: ${{ matrix.context }}
-          tags: ${{ matrix.tags }}:latest
+          tags: ${{ matrix.tag }}:latest
           cache-to: ${{ matrix.cache-to }}
           cache-from: ${{ matrix.cache-from }}
 
