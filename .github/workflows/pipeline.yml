@@ -12,22 +12,22 @@ jobs:
       matrix:
         include:
          - context: ./client
-           tag: natlachaman/multi-client
+           tag: natwimt/multi-client
            cache-from: type=local,src=/tmp/.buildx-cache/client
            cache-to: type=local,dest=/tmp/.buildx-cache-new/client
 
          - context: ./server
-           tag: natlachaman/multi-server
+           tag: natwimt/multi-server
            cache-from: type=local,src=/tmp/.buildx-cache/server
            cache-to: type=local,dest=/tmp/.buildx-cache-new/server
 
          - context: ./nginx
-           tag: natlachaman/multi-nginx
+           tag: natwimt/multi-nginx
            cache-from: type=local,src=/tmp/.buildx-cache/nginx
            cache-to: type=local,dest=/tmp/.buildx-cache-new/nginx
 
          - context: ./worker
-           tag: natlachaman/multi-worker
+           tag: natwimt/multi-worker
            cache-from: type=local,src=/tmp/.buildx-cache/worker
            cache-to: type=local,dest=/tmp/.buildx-cache-new/worker
 
@@ -47,8 +47,8 @@ jobs:
       
       - name: Build & test client docker dev image
         run: |
-          docker build -t natlachaman/react-test -f ./client/Dockerfile.dev ./client
-          docker run -e CI=true natlachaman/react-test npm test -- --coverage
+          docker build -t natwimt/react-test -f ./client/Dockerfile.dev ./client
+          docker run -e CI=true natwimt/react-test npm test -- --coverage
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
@@ -57,16 +57,16 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       # name: Build multiple docker prod images
-      # - run: docker build -t natlachaman/multi-client ./client
-      # - run: docker build -t natlachaman/multi-nginx ./nginx
-      # - run: docker build -t natlachaman/multi-server ./server
-      # - run: docker build -t natlachaman/multi-worker ./worker
+      # - run: docker build -t natwimt/multi-client ./client
+      # - run: docker build -t natwimt/multi-nginx ./nginx
+      # - run: docker build -t natwimt/multi-server ./server
+      # - run: docker build -t natwimt/multi-worker ./worker
 
       # name: Push to DockerHub
-      # - run: docker push natlachaman/multi-client
-      # - run: docker push natlachaman/multi-client
-      # - run: docker push natlachaman/multi-client
-      # - run: docker push natlachaman/multi-client
+      # - run: docker push natwimt/multi-client
+      # - run: docker push natwimt/multi-client
+      # - run: docker push natwimt/multi-client
+      # - run: docker push natwimt/multi-client
 
 
       - name: Build & Push images
